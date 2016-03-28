@@ -20,7 +20,8 @@ class Child:
             self._kataPK = 'X' #kataPK oznacza doswiadczenie tak samo dla kata i kumite. Nie chcialo mi sie wszedzie zmieniac zazwy zmiennej :D
         else:
             self._kataPK = ''
-        self._name = name
+        name = name.split(" "[0])
+        self._name = str(name[0].title() + ' ' + name[1].title())
         self._sex = sex
         self._age = localtime.tm_year - birth
         self._weight = weight
