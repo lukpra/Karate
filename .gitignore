@@ -16,11 +16,14 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+# Ignore PyCharm fileformat
 *.pyc
+# Ignore Pycharm Catalogs
 dist/
 build/
 .idea/
 dane/
+# Ignore generated pdf's
 .pdf
 
 # =========================
