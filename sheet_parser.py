@@ -119,17 +119,13 @@ def parseSheet(sh):
     #index = None # kiedyś jak zrobimy inteligentną tabelke z przemieszczeniem to będzie pod LP
     for rx in range(sh.nrows):
         row = sh.row(rx)
-        #print row[lp_column].value
-        #if (row[lp_column].value == 'LP.'):
-        #    print 'NO KURWA'
 
-
-        if (row[1].value != '' and tabela == False): # Wyszukujemy nazwe druzyny
+        if ( (row[1].value == 'KLUB:' or row[1].value == 'klub:' or row[1].value == 'Klub:') and tabela == False): # Wyszukujemy nazwe druzyny
             #print row[0].value
-            club[row[1].value] = row[2].value
+            club[row[1].value] = row[3].value
         if (tabela == True):
             if(row[lp_column].value != ''):
-                #row2 = sh.row(rx+1)
+                #indywidualne
                 if(row[kata_column].value == 'x' or row[kata_column].value == 'X' or row[kata_column].value == 'xpk' or row[kata_column].value == 'XPK' or row[kumite_column].value == 'x' or row[kumite_column].value == 'X' or row[kumite_column].value == 'xpk' or row[kumite_column].value == 'XPK' or row[fukugo_column].value == 'x' or row[fukugo_column].value == 'X'):
                 #if(row[0+2].value == 'M' or row2[0+2].value == 'M' or row[0+2].value == 'm' or row2[0+2].value == 'm' or row[0+2].value == 'K' or row2[0+2].value == 'K' or row[0+2].value == 'k' or row2[0+2].value == 'k'): # jak nie ma płci to mamy indywidualnego ludzia
                     name = row[name_column].value
@@ -143,12 +139,11 @@ def parseSheet(sh):
                     fuku_go = row[fukugo_column].value
                     if(name != ' ' and sex != '' ):
                         ch = Child(name, sex, birthreg, weightreg, kata, kumite, fuku_go)
-                        print ch
-                        print len(name)
+                        #print ch
+                        #print len(name)
                         childList.append(ch)
-                elif(row[kata_column].value == 'xd' or row[kata_column].value == 'XD' or row[kata_column].value == 'xpkd' or row[kata_column].value == 'XPKD' or row[kumite_column].value == 'xd' or row[kumite_column].value == 'XD' or row[kumite_column].value == 'xpkd' or row[kumite_column].value == 'XPKD'): #druzynowe
-                    #name = row[0+1].value
-                    #people = row2[0+1].value
+                #drużynowe
+                elif(row[kata_column].value == 'xd' or row[kata_column].value == 'XD' or row[kata_column].value == 'xpkd' or row[kata_column].value == 'XPKD' or row[kumite_column].value == 'xd' or row[kumite_column].value == 'XD' or row[kumite_column].value == 'xpkd' or row[kumite_column].value == 'XPKD'):
                     baza = row[name_column].value.split(":"[0])
                     name = baza[0]
                     people = baza[1]
@@ -159,20 +154,16 @@ def parseSheet(sh):
                     kumite = row[kumite_column].value
                     if(name != ''):
                         tm = Team(name, people, sex, birthreg, kata, kumite)
-                        print tm
+                        #print tm
                         teamList.append(tm)
 
         if(row[lp_column].value == 'LP.' or row[lp_column].value == 'Lp.' or row[lp_column].value == 'lp.' or row[lp_column].value == 'LP' or row[lp_column].value == 'Lp' or row[lp_column].value == 'lp'):
             tabela = True
-            #if ((row[5].value == 'K' or row[5].value == 'M' or row[5].value == 'k' or row[5].value == 'm') and row[10].value == '' ): # Parsujemy tylko pojedynczych ludzi
-            #    childList.append(parseRow(row))
-            #elif ((row[5].value == 'K' or row[5].value == 'M') and row[10].value != '' ): # Parsujemy druzyny
-            #    teamList.append( Team(row[2].value, row[10].value, row[12].value, row[5].value, row[8].value) )
 
-    print 'ludzie'
-    print childList
-    print 'teamy'
-    print teamList
+    #print 'ludzie'
+    #print childList
+    #print 'teamy'
+    #print teamList
 
     #print 'club'
     #print club
