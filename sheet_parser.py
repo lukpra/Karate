@@ -14,13 +14,16 @@ sys.setdefaultencoding('utf-8')
 
 
 class Child:
-    def __init__(self, name, sex, birth, weight, kata, kataPK, kumite, fuku_go):
+    def __init__(self, name, sex, birth, weight, kata, kumite, fuku_go):
         localtime = time.localtime(time.time())
+        if(kata == 'xpk' or kata == 'XPK' or kumite == 'xpk' or kumite == 'XPK'):
+            self._kataPK = 'X' #kataPK oznacza doswiadczenie tak samo dla kata i kumite. Nie chcialo mi sie wszedzie zmieniac zazwy zmiennej :D
+        else:
+            self._kataPK = ''
         self._name = name
         self._sex = sex
         self._age = localtime.tm_year - birth
         self._weight = weight
-        self._kataPK = kataPK
         self._kata = kata
         self._kumite = kumite
         self._fuku_go = fuku_go
@@ -49,15 +52,18 @@ class Child:
         return self._name
 
 class Team:
-    def __init__(self, name, people, sex, birth, kumite, kata, kataPK):
+    def __init__(self, name, people, sex, birth, kata, kumite):
         localtime = time.localtime(time.time())
+        if(kata == 'xpkd' or kata == 'XPKD' or kumite == 'xpkd' or kumite == 'XPKD'):
+            self._kataPK = 'X' #kataPK oznacza doswiadczenie tak samo dla kata i kumite. Nie chcialo mi sie wszedzie zmieniac zazwy zmiennej :D
+        else:
+            self._kataPK = ''
         self._name = name
         self._people = people
         self._sex = sex
         self._kata = kata
         self._kumite = kumite
         self._birth = localtime.tm_year - birth
-        self._kataPK = kataPK
 
     def __str__(self):
         print (u"Nazwa i wiek \t%s\t%s" % (self._name, self._birth))
@@ -68,7 +74,7 @@ class Team:
         return ''
 
     def getName(self):
-        return self._name
+        return str(self._name + ': ' +self._people)
 
 class School:
     def __init__(self, club, childList, teamList):
@@ -99,48 +105,63 @@ def parseSheet(sh):
     teamList = []
     club = {}
     tabela = False
+    lp_column = 1
+    name_column = 2
+    birth_column = 3
+    kata_column = 4
+    kumite_column = 5
+    fukugo_column = 6
+    weight_column = 7
+    sex_column = 8
+
+
     #index = None # kiedyś jak zrobimy inteligentną tabelke z przemieszczeniem to będzie pod LP
-    for rx in range(sh.nrows-1):
+    for rx in range(sh.nrows):
         row = sh.row(rx)
+        #print row[lp_column].value
+        #if (row[lp_column].value == 'LP.'):
+        #    print 'NO KURWA'
 
 
-        if (row[0].value != '' and tabela == False): # Wyszukujemy nazwe druzyny
+        if (row[1].value != '' and tabela == False): # Wyszukujemy nazwe druzyny
             #print row[0].value
-            club[row[0].value] = row[1].value
+            club[row[1].value] = row[2].value
         if (tabela == True):
-            if(row[0].value != ''):
-                row2 = sh.row(rx+1)
-                if(row[0+2].value == 'M' or row2[0+2].value == 'M' or row[0+2].value == 'm' or row2[0+2].value == 'm' or row[0+2].value == 'K' or row2[0+2].value == 'K' or row[0+2].value == 'k' or row2[0+2].value == 'k'): # jak nie ma płci to mamy indywidualnego ludzia
-                    name = row[0+1].value + ' ' + row2[0+1].value
-                    sex = row[0+2].value + '' + row2[0+2].value
-                    birth = str(str(row[0+3].value) + '' + str(row2[0+3].value)) # dodac parsowanie
-                    birth = float(re.sub(r'[a-zA-Z]*','',birth))
-                    weight = str("0"+str(row[0+4].value) + '' + str(row2[0+4].value)) # dodac parsowanie, cebularne zero plus jest po to aby pusty string '' zostal skonwertowany na inta. String 02001 zostanie zmieniony na 2001
-                    weight = float(re.sub(r'[a-zA-Z]*','',weight))
-                    kata = row[0+5].value + '' + row2[0+5].value
-                    kataPK = row[0+6].value + '' + row2[0+6].value
-                    kumite = row[0+7].value + '' + row2[0+7].value
-                    fuku_go = row[0+9].value + '' + row2[0+9].value
+            if(row[lp_column].value != ''):
+                #row2 = sh.row(rx+1)
+                if(row[kata_column].value == 'x' or row[kata_column].value == 'X' or row[kata_column].value == 'xpk' or row[kata_column].value == 'XPK' or row[kumite_column].value == 'x' or row[kumite_column].value == 'X' or row[kumite_column].value == 'xpk' or row[kumite_column].value == 'XPK' or row[fukugo_column].value == 'x' or row[fukugo_column].value == 'X'):
+                #if(row[0+2].value == 'M' or row2[0+2].value == 'M' or row[0+2].value == 'm' or row2[0+2].value == 'm' or row[0+2].value == 'K' or row2[0+2].value == 'K' or row[0+2].value == 'k' or row2[0+2].value == 'k'): # jak nie ma płci to mamy indywidualnego ludzia
+                    name = row[name_column].value
+                    sex = row[sex_column].value
+                    birth = str(str(row[birth_column].value)) # dodac parsowanie
+                    birthreg = float(re.sub(r'[a-zA-Z]*','',birth))
+                    weight = str("0"+str(row[weight_column].value)) # dodac parsowanie, cebularne zero plus jest po to aby pusty string '' zostal skonwertowany na inta. String 02001 zostanie zmieniony na 2001
+                    weightreg = float(re.sub(r'[a-zA-Z]*','',weight))
+                    kata = row[kata_column].value
+                    kumite = row[kumite_column].value
+                    fuku_go = row[fukugo_column].value
                     if(name != ' ' and sex != '' ):
-                        ch = Child(name, sex, birth, weight, kata, kataPK, kumite, fuku_go)
+                        ch = Child(name, sex, birthreg, weightreg, kata, kumite, fuku_go)
                         print ch
-                        #print len(name)
+                        print len(name)
                         childList.append(ch)
-                else: #druzynowe
-                    name = row[0+1].value
-                    people = row2[0+1].value
-                    sex = row[0+2].value + '' + row2[0+2].value
-                    birth = str("0" +str(row[0+3].value) + '' + str(row2[0+3].value)) # dodac parsowanie
-                    birth = float(re.sub(r'[a-zA-Z]*','',birth))
-                    kumite = row[0+8].value + '' + row2[0+8].value
-                    kata = row[0+10].value + '' + row2[0+10].value
-                    kataPK = row[0+11].value + '' + row2[0+11].value
+                elif(row[kata_column].value == 'xd' or row[kata_column].value == 'XD' or row[kata_column].value == 'xpkd' or row[kata_column].value == 'XPKD' or row[kumite_column].value == 'xd' or row[kumite_column].value == 'XD' or row[kumite_column].value == 'xpkd' or row[kumite_column].value == 'XPKD'): #druzynowe
+                    #name = row[0+1].value
+                    #people = row2[0+1].value
+                    baza = row[name_column].value.split(":"[0])
+                    name = baza[0]
+                    people = baza[1]
+                    sex = row[sex_column].value
+                    birth = str("0" +str(row[birth_column].value)) # dodac parsowanie
+                    birthreg = float(re.sub(r'[a-zA-Z]*','',birth))
+                    kata = row[kata_column].value
+                    kumite = row[kumite_column].value
                     if(name != ''):
-                        tm = Team(name, people, sex, birth, kumite, kata, kataPK)
-                        #print tm
+                        tm = Team(name, people, sex, birthreg, kata, kumite)
+                        print tm
                         teamList.append(tm)
 
-        if(row[0].value == 'LP.' or row[0].value == 'Lp.' or row[0].value == 'lp.' or row[0].value == 'LP' or row[0].value == 'Lp' or row[0].value == 'lp'):
+        if(row[lp_column].value == 'LP.' or row[lp_column].value == 'Lp.' or row[lp_column].value == 'lp.' or row[lp_column].value == 'LP' or row[lp_column].value == 'Lp' or row[lp_column].value == 'lp'):
             tabela = True
             #if ((row[5].value == 'K' or row[5].value == 'M' or row[5].value == 'k' or row[5].value == 'm') and row[10].value == '' ): # Parsujemy tylko pojedynczych ludzi
             #    childList.append(parseRow(row))
@@ -148,10 +169,11 @@ def parseSheet(sh):
             #    teamList.append( Team(row[2].value, row[10].value, row[12].value, row[5].value, row[8].value) )
 
     print 'ludzie'
-    #print childList
+    print childList
     print 'teamy'
-    #print teamList
+    print teamList
 
+    #print 'club'
     #print club
     return School(club, childList, teamList)
 
