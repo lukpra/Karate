@@ -70,12 +70,14 @@ def generatePdf(list, opt, case):
         print ("iterator")+str(i)+(" list len ")+str(listLen)+" iterElem "+str(iterElem/2)
         valGraphList = graphList[(2*i)+1]-1 # i -> numer osoby, *2 by uzyskac pare. +1 bo iterujemy liste od zera. -1 poniewaz chcemy sprawdzic nieparzysta osobe z pary. Jesli ona jest, jest parzysta. Jesli nie, to nie ma koniec.
         if valGraphList != 0:
+            print("w ifie")
             valGraphList = valGraphList/2
         print(str(valGraphList))
         if valGraphList*2 <= listLen-1:
-            context['slot_'+slot] = '%s: %s' % (list[valGraphList][0]+1,list[valGraphList][1][0])
+            print("w ifie2")
+            context['slot_'+str(slot)] = '%s: %s' % (list[valGraphList][0]+1,list[valGraphList][1][0])
             slot = slot + 1
-            context['slot_'+slot] = '%s: %s' % (list[valGraphList][0]+1,list[valGraphList][1][0])
+            context['slot_'+str(slot)] = '%s: %s' % (list[valGraphList][0]+1,list[valGraphList][1][0])
             slot = slot + 1
             print("dodane do slownika")
 	
