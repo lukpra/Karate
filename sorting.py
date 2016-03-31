@@ -81,6 +81,7 @@ def selectTeams(listIn, sex, exp, kata, ageFrom, ageTo):
     _output = sortSex(listIn, sex)
     _output = sortExp(_output, exp)
     _output = sortKata(_output, kata)
+    _output = sortBirth(_output, ageFrom, ageTo)
 
     return _output
 
