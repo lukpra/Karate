@@ -64,7 +64,7 @@ class Team:
         self._sex = sex
         self._kata = kata
         self._kumite = kumite
-        self._birth = localtime.tm_year - birth
+        self._age = localtime.tm_year - birth
 
     def __str__(self):
         print (u"Nazwa i wiek \t%s\t%s" % (self._name, self._birth))
@@ -148,7 +148,7 @@ def parseSheet(sh):
                     name = baza[0]
                     people = baza[1]
                     sex = row[sex_column].value
-                    birth = str("0" +str(row[birth_column].value)) # dodac parsowanie
+                    birth = str(str(row[birth_column].value)) # dodac parsowanie
                     birthreg = float(re.sub(r'[a-zA-Z]*','',birth))
                     kata = row[kata_column].value
                     kumite = row[kumite_column].value
