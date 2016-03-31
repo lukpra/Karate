@@ -130,10 +130,10 @@ class PageTwo(wx.Panel):
         # self.rbCategory = wx.RadioBox(self, label = "Kategoria", choices = self.categoryList, majorDimension = 2,
         #                   style=wx.RA_SPECIFY_COLS)
         #
-        # self.inputTxtAgeFrom = wx.TextCtrl(self, wx.ID_ANY,'')
-        # self.inputTxtAgeTo = wx.TextCtrl(self, wx.ID_ANY, '')
-        # self.inputTxtWeightFrom = wx.TextCtrl(self, wx.ID_ANY, '')
-        # self.inputTxtWeightTo = wx.TextCtrl(self, wx.ID_ANY, '')
+        self.inputTxtAgeFrom = wx.TextCtrl(self, wx.ID_ANY,'')
+        self.inputTxtAgeTo = wx.TextCtrl(self, wx.ID_ANY, '')
+        #self.inputTxtWeightFrom = wx.TextCtrl(self, wx.ID_ANY, '')
+        #self.inputTxtWeightTo = wx.TextCtrl(self, wx.ID_ANY, '')
         # self.inputTxtCategory = wx.TextCtrl(self, wx.ID_ANY, '')
         #
         #self.btnGen = wx.Button(self, wx.ID_ANY, 'OK')
@@ -143,12 +143,12 @@ class PageTwo(wx.Panel):
         # self.rowSizer1 = wx.BoxSizer(wx.HORIZONTAL)
         self.rowSizer2 = wx.BoxSizer(wx.HORIZONTAL)
         # self.rowSizer3 = wx.BoxSizer(wx.HORIZONTAL)
-        # self.rowSizer4 = wx.BoxSizer(wx.HORIZONTAL)
+        self.rowSizer4 = wx.BoxSizer(wx.HORIZONTAL)
         self.rowSizer5 = wx.BoxSizer(wx.HORIZONTAL)
         #
         # #self.labelKata = wx.StaticText(self, wx.ID_ANY, 'Kata:')
         # #self.labelSex = wx.StaticText(self, wx.ID_ANY, 'Plec:')
-        # self.labelAge = wx.StaticText(self, wx.ID_ANY, 'Wiek:')
+        self.labelAge = wx.StaticText(self, wx.ID_ANY, 'Wiek:')
         # self.labelWeight = wx.StaticText(self, wx.ID_ANY, 'Waga:')
         # self.labelCategory = wx.StaticText(self, wx.ID_ANY, 'Kategoria:')
         #
@@ -160,8 +160,9 @@ class PageTwo(wx.Panel):
         # self.rowSizer3.Add(self.inputTxtAgeFrom, 0, wx.ALL, 5)
         # self.rowSizer3.Add(self.inputTxtAgeTo, 0, wx.ALL, 5)
         # self.rowSizer4.Add(self.labelWeight, 0, wx.ALL, 5)
-        # self.rowSizer4.Add(self.inputTxtWeightFrom, 0, wx.ALL, 5)
-        # self.rowSizer4.Add(self.inputTxtWeightTo, 0, wx.ALL, 5)
+        self.rowSizer4.Add(self.labelAge, 0, wx.ALL, 5)
+        self.rowSizer4.Add(self.inputTxtAgeFrom, 0, wx.ALL, 5)
+        self.rowSizer4.Add(self.inputTxtAgeTo, 0, wx.ALL, 5)
         # self.rowSizer5.Add(self.labelCategory, 0, wx.ALL, 5)
         # self.rowSizer5.Add(self.inputTxtCategory, 0, wx.ALL, 5)
         #
@@ -169,6 +170,7 @@ class PageTwo(wx.Panel):
         self.topSizer.Add(self.rowSizer2,0, wx.LEFT)
         # self.topSizer.Add(self.rowSizer3,0, wx.LEFT)
         # self.topSizer.Add(self.rowSizer4,0, wx.LEFT)
+        self.topSizer.Add(self.rowSizer4,0, wx.LEFT)
         self.topSizer.Add(self.rowSizer5,0, wx.LEFT)
         self.topSizer.Add(self.rbExp, 0, wx.LEFT)
         self.topSizer.Add(self.rbCategory, 0, wx.LEFT)
@@ -194,8 +196,24 @@ class PageTwo(wx.Panel):
             lista.append(True)
         else:
             lista.append(False)
+
+        temp_value = self.validateData(self.inputTxtAgeFrom)
+        if temp_value != "Err":
+            lista.append(temp_value)
+
+        temp_value = self.validateData(self.inputTxtAgeTo)
+        if temp_value != "Err":
+            lista.append(temp_value)
+
         print lista
         return lista
+
+
+    def validateData(self,ctrl):
+        if len(ctrl.GetValue())>0 and ctrl.GetValue().isdigit():
+            return ctrl.GetValue()
+        else:
+            return "Err"
 
 class PageThree(wx.Panel):
     def __init__(self, parent):
