@@ -77,11 +77,10 @@ def selectChilds(listIn, kata, sex, ageFrom, ageTo, weightFrom, weightTo, catego
 
     return _output
 
-def selectTeams(listIn, sex, exp, kata):
+def selectTeams(listIn, sex, exp, kata, ageFrom, ageTo):
     _output = sortSex(listIn, sex)
     _output = sortExp(_output, exp)
     _output = sortKata(_output, kata)
-    #_output = sortBirth(_output, ageFrom, ageTo) # jak bedzie w GUI
 
     return _output
 
@@ -100,10 +99,10 @@ def selector(schoolList, options, case):
             _selectedList.append( selectChilds(schoolList[i]._childList, options[0], options[1], options[2], options[3], options[4], options[5], options[6], options[7]))
     elif case == 1:
         for i in range(len(schoolList)):
-            _selectedList.append( selectTeams(schoolList[i]._teamList, options[0], options[1], options[2]) )
+            _selectedList.append( selectTeams(schoolList[i]._teamList, options[0], options[1], options[2], options[3], options[4]))
     elif case == 2:
         for i in range(len(schoolList)):
-            _selectedList.append( selectFree(schoolList[i]._childList, options[0], options[1], options[2]) )
+            _selectedList.append( selectFree(schoolList[i]._childList, options[0], options[1], options[2]))
 
     print _selectedList
     return _selectedList
